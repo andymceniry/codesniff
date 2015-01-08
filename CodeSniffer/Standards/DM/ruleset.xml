@@ -127,4 +127,9 @@
       <exclude name="PSR2.Files.EndFileWhitespace.NotFound"/>
     </rule>
 
+    <!--  Duplicate: DM.Functions.FunctionCallSignature.SpaceAfterOpenBracket  -->
+    <rule ref="DM.Methods.FunctionCallSignature.SpaceAfterOpenBracket">
+      <exclude name="DM.Methods.FunctionCallSignature.SpaceAfterOpenBracket"/>
+    </rule>
+
 </ruleset>
