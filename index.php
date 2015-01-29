@@ -131,7 +131,8 @@ if ($handle = opendir($dir)) {
                         if ($fp_content[1] == 0 AND $fp_content[2] == 0) {
                             echo '<span class="all-clean"> &nbsp; </span>';
                         } else {
-                            echo '<span class="warning none">'.$fp_content[2].'</span> <span class="error">'.$fp_content[1].'</span>';
+                            echo '<span class="warning">'.$fp_content[2].'</span>';
+                            echo '<span class="error">'.$fp_content[1].'</span>';
                         }
                     }
                 } else {

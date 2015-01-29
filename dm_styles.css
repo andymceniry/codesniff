@@ -8,12 +8,12 @@ a.file_link { padding: 2px 0px 0px 0px; color:#000; float:left; }
 .entry_name { width: 400px; }
 .entry_history { width:200px; float:right; text-align:right;}
 
-.entry_history span { padding: 3px 7px 3px 8px; border-radius: 3px; margin:0 0 0 2px; min-width:21px; display:inline-block; text-align:center;}
+.entry_history span { padding: 3px 7px 3px 8px; border-radius: 3px; margin:0 0 0 2px; min-width:24px; display:inline-block; text-align:center;}
 .entry_history .error { background:#c30; color:#fff; }
 .entry_history .warning { background:#fc0; }
-.entry_history .out-of-date { background:#fc0; min-width:64px; }
-.entry_history .not-tested { background:#eee; color:#888; min-width:64px; }
-.entry_history .all-clean { background:#bf9; color:#888; min-width:64px; }
+.entry_history .out-of-date { background:#fc0; min-width:65px; }
+.entry_history .not-tested { background:#eee; color:#888; min-width:65px; }
+.entry_history .all-clean { background:#bf9; color:#888; min-width:65px; }
 .entry_history .error.none, .entry_history .warning.none { background:#380; color:#fff; }
 
 .infopath { background-position: 4px 8px; background-color: #c30; padding: 10px 27px; color:#fff; }
