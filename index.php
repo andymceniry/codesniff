@@ -28,27 +28,17 @@ if (isset($_GET['dir'])) {
     $dir = dirname(getcwd());
 }
 
-echo '<div class="infopath">' . str_replace('\\', '/', $dir) . '</div>';
 
 if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
-    ?>
-    <form action="<?php echo basename(__FILE__); ?>" method="get">
-    <input type="hidden" name="path" value="<?php echo $dir; ?>" />    
-    <input type="hidden" name="dir" value="current" />
-    <input type="image" src="wcs_images/back.png" class="submit_back" />
-    </form>
-
-    <div class='report_header'>
-    <form action="<?php echo basename(__FILE__); ?>" method="get">
-    <input type="hidden" name="standard" value="<?php echo $_GET['standard']; ?>" />
-    <input type="hidden" name="path" value="<?php echo $_GET['path']; ?>" />
-    <input type="hidden" name="filetosniff" value="<?php echo $_GET['filetosniff']; ?>" />
-    <input type="hidden" name="dir" value="current" />
-    <?php echo (isset($_GET['sniff_folder_summary']) AND $_GET['sniff_folder_summary'] == 'Y') ? '<input type="hidden" name="sniff_folder_summary" value="Y"/>' : ''; ?>
-    <!--<label for="showSources">show sources<input type="checkbox" name="showSources" id="showSources" value="Y" <?php #echo isset($_GET['showSources']) ? ' checked="checked"' : ''; ?>/></label>-->
-    <input type="submit" value="RE-SNIFF" name="resniff" class="submit_sniff" /><br />
-    </form>
+    echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'</p>';
+        ?>
+        <form action="<?php echo basename(__FILE__); ?>" method="get" class="header-back-btn">
+        <input type="hidden" name="path" value="<?php echo $dir; ?>" />    
+        <input type="hidden" name="dir" value="current" />
+        <input type="image" src="wcs_images/back.png" class="submit_back" />
+        </form>
     </div>
+
     <?php
     
     $_SERVER['argc'] = 3;
@@ -68,16 +58,20 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
 }
 
 if ($handle = opendir($dir)) {
+echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'</p>';
 
     if ($dir != dirname(getcwd())) {
         ?>
-        <form action="<?php echo basename(__FILE__); ?>" method="get">
+        <form action="<?php echo basename(__FILE__); ?>" method="get" class="header-back-btn">
         <input type="hidden" name="path" value="<?php echo $dir; ?>" />    
         <input type="hidden" name="dir" value="previous" />
         <input type="image" src="wcs_images/back.png" class="submit_back" />
         </form>
         <?php
     }
+    echo '</div>';
+
+    echo '<div class="entry_row_holder">';
 
     $extensionstosniff = array('php','css');
     $typepicture = array('bmp','gif','png','jpg');
@@ -89,7 +83,9 @@ if ($handle = opendir($dir)) {
             if (is_dir($dir."/".$entry) === true) {
                     $folders[] = $entry;
                 } else {
-                    $files[] = $entry;
+                    if (in_array(pathinfo($dir."/".$entry, PATHINFO_EXTENSION), $extensionstosniff)) {
+                        $files[] = $entry;
+                    }
             }
         }
     }
@@ -106,8 +102,7 @@ if ($handle = opendir($dir)) {
 
 
     sort($files);
-    foreach($files as $entry) {    
-        if (in_array(pathinfo($dir."/".$entry, PATHINFO_EXTENSION), $extensionstosniff)) {
+    foreach($files as $entry) {
             ?>
             <div class='entry_row_filetosniff'>
                 <div class='entry_name'><a class="file_link" href="?path=<?php echo $dir;?>&standard=DM&sniff=TEST&dir=current&filetosniff=<?php echo $entry; ?>"/><?php echo $entry; ?></a></div>
@@ -129,88 +124,28 @@ if ($handle = opendir($dir)) {
                         echo '<span class="out-of-date">out of date</span>';
                     } else {
                         if ($fp_content[1] == 0 AND $fp_content[2] == 0) {
-                            echo '<span class="all-clean"> &nbsp; </span>';
+                            echo '<span class="all-good">all good</span>';
                         } else {
                             echo '<span class="warning">'.$fp_content[2].'</span>';
                             echo '<span class="error">'.$fp_content[1].'</span>';
                         }
                     }
                 } else {
-                    echo '<span class="not-tested"> &nbsp; </span>';
+                    echo '<span class="not-tested">not tested</span>';
                 }
 
                 ?>
-</div>
+                </div>
                 <br style='clear:both;' />
             </div>
             <?php
-        }
     }
 
-
-#rewinddir($handle);
-    while (false !== ($entry = readdir($handle))) {
-        ?>
-        <form class="form_row" action="<?php echo basename(__FILE__); ?>" method="get">
-        <input type="hidden" name="path" value="<?php echo $dir; ?>" />
-        <?php
-        if ($entry != "." && $entry != ".." && $entry != "webcodesniffer") {
-            if (is_dir($dir."/".$entry) === true) {
-                ?>
-                <div class='entry_row_dir'>
-                    <input type="hidden" name="dir" value="next" />
-                    <a class="folder_link" href="?path=<?php echo $dir;?>&dir=next&dir_name=<?php echo $entry; ?>"/><?php echo $entry; ?></a>
-                    <div class="entry_commandline">
-                        
-                        <span class='standard'>sniff type:</span>
-                        <select name='sniff_folder_summary'>
-                            <option value="Y" selected="selected">Summary</option>
-                            <option value="N">Full Sniff</option>
-                        </select>
-                        
-                        <input type="submit" value="TEST" name="sniff" class="submit_sniff" />
-                    </div>
-                    <input type="hidden" name="standard" value="DM"/>
-                    <input type="hidden" name="filetosniff" value="<?php echo $entry; ?>" />
-                    <input type="hidden" name="dir" value="current" />
-                </div>
-                <?php            
-            } else {
-                
-                if (in_array(pathinfo($dir."/".$entry, PATHINFO_EXTENSION), $extensionstosniff)) {
-                    ?>
-                    <div class='entry_row_filetosniff'>
-                        <div class='entry_name'><?php echo $entry; ?></div>
-                        <div class='entry_commandline'>
-                            <span class='standard hide'>Standard:</span><select name='standard' class='hide'>
-                                <option value="DM" selected="selected">DM</option>
-                            </select>
-                            <input type="submit" value="TEST" name="sniff" class="submit_sniff" />
-                            <input type="hidden" name="filetosniff" value="<?php echo $entry; ?>" />
-                            <input type="hidden" name="dir" value="current" />
-                        </div>
-                        <br style='clear:both;' />
-                    </div>
-                    <?php
-                } else {
-                
-                    if (in_array(pathinfo($dir."/".$entry, PATHINFO_EXTENSION), $typepicture)) {
-                        ?>
-                        <div class='entry_row_file_picture'><div class='entry_name'><?php echo $entry; ?></div><br style='clear:both;' /></div>
-                        <?php
-                    } else {
-                        ?>
-                        <div class='entry_row_file_generic'><div class='entry_name'><?php echo $entry; ?></div><br style='clear:both;' /></div>
-                        <?php                    
-                    }
-                }
-            }
-        }
-        ?>
-        </form>
-        <?php
+    if (count($folders) < 1 AND count($files) < 1) {
+        echo '<p><b> &nbsp; &nbsp; &nbsp; no matching files or folders found.</b></p>';
     }
-    closedir($handle);
+
+    echo '</div>';
 }
 ?>
 

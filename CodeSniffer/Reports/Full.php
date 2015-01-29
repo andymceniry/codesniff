@@ -56,21 +56,25 @@ class PHP_CodeSniffer_Reports_Full implements PHP_CodeSniffer_Report
         $errorsShown = 0;
         $width       = max($width, 90);
         foreach ($report['files'] as $filename => $file) {
-            if (empty($file['messages']) === true) {
-                continue;
-            }
+
 
             echo PHP_EOL;
             echo '<div class="report_filename">';            
-            echo ' FILE: ';
+            echo '<p>FILE: ';
             $theFile = basename($filename);
             if (strlen($theFile) <= ($width - 9)) {
                 echo $theFile;
             } else {
                 echo '...'.substr($theFile, (strlen($theFile) - ($width - 9)));
             }
+            echo '</p>';
+            echo '<input type="image" src="wcs_images/refresh.png" class="submit_back sniff-refresh" onclick="location.reload();" />';
             echo '</div>';
             #echo PHP_EOL;
+
+            if (empty($file['messages']) === true) {
+                continue;
+            }
 
             #echo str_repeat('-', $width).PHP_EOL;
             echo '<div class="report_summary">';

@@ -32,6 +32,11 @@
       <exclude name="DM.Files.EndFileNewline.NotFound"/>
     </rule>
 
+    <!--  Error Message: PHP files must only contain PHP code  -->
+    <rule ref="DM.Files.InlineHTML.Found">
+      <exclude name="DM.Files.InlineHTML.Found"/>
+    </rule>
+
     <!--  Error Message: End of line character is invalid; expected "\n" but found "\r\n"  -->
     <rule ref="DM.Files.LineEndings.InvalidEOLChar">
       <exclude name="DM.Files.LineEndings.InvalidEOLChar"/>
@@ -60,6 +65,11 @@
     <!--  Error Message: Consider putting global function "xml2json" in a static class  -->
     <rule ref="DM.Functions.GlobalFunction.Found">
       <exclude name="DM.Functions.GlobalFunction.Found"/>
+    </rule>
+
+    <!--  Error Message: The opening PHP tag must be the first content in the file  -->
+    <rule ref="DM.PHP.CharacterBeforePHPOpeningTag.Found">
+      <exclude name="DM.PHP.CharacterBeforePHPOpeningTag.Found"/>
     </rule>
 
     <!--  Error Message: TRUE, FALSE and NULL must be lowercase; expected "null" but found "NULL"  -->
