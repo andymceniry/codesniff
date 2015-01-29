@@ -70,7 +70,7 @@ class PHP_CodeSniffer_Reports_Full implements PHP_CodeSniffer_Report
                 echo '...'.substr($theFile, (strlen($theFile) - ($width - 9)));
             }
             echo '</div>';
-            echo PHP_EOL;
+            #echo PHP_EOL;
 
             #echo str_repeat('-', $width).PHP_EOL;
             echo '<div class="report_summary">';
@@ -83,6 +83,9 @@ class PHP_CodeSniffer_Reports_Full implements PHP_CodeSniffer_Report
             echo 'AFFECTING '.count($file['messages']).' LINE(S)'.PHP_EOL;
             #echo str_repeat('-', $width).PHP_EOL;
             echo '</div>';
+
+
+            logResults($filename, $file['errors'], $file['warnings']);
 
 
             // Work out the max line number for formatting.
@@ -105,19 +108,20 @@ class PHP_CodeSniffer_Reports_Full implements PHP_CodeSniffer_Report
             // The padding that all lines will require that are
             // printing an error message overflow.
             $paddingLine2  = str_repeat(' ', ($maxLineLength + 1));
-            $paddingLine2 .= ' | ';
-            $paddingLine2 .= str_repeat(' ', $typeLength);
-            $paddingLine2 .= ' | ';
+            $paddingLine2 .= '  ';
+            #$paddingLine2 .= '   ';
+            #$paddingLine2 .= str_repeat(' ', $typeLength);
+            #$paddingLine2 .= '   ';
 
             // The maxium amount of space an error message can use.
             $maxErrorSpace = ($width - strlen($paddingLine2) - 1);
-
+$maxErrorSpace = 128;
             foreach ($file['messages'] as $line => $lineErrors) {
                 foreach ($lineErrors as $column => $colErrors) {
                     foreach ($colErrors as $error) {
                         $message = $error['message'];
                         if ($showSources === true) {
-                            $message .= ' ('.$error['source'].')';
+                            #$message .= ' <span class="error-source">('.$error['source'].')</span>';
                         }
 
                         // The padding that goes on the front of the line.
@@ -127,21 +131,14 @@ class PHP_CodeSniffer_Reports_Full implements PHP_CodeSniffer_Report
                             $maxErrorSpace,
                             PHP_EOL.$paddingLine2
                         );
-
-                        echo ' '.str_repeat(' ', $padding).$line.' | '.$error['type'];
-                        if ($error['type'] === 'ERROR') {
-                            if ($file['warnings'] > 0) {
-                                echo '  ';
-                            }
-                        }
-
-                        echo ' | '.$errorMsg.PHP_EOL;
+                        echo '<span class="line-number '.strtolower($error['type']).'" title="'.$error['source'].'">'.str_repeat(' ', $padding).$line.'</span> ';
+                        echo $errorMsg.PHP_EOL;
                         $errorsShown++;
                     }//end foreach
                 }//end foreach
             }//end foreach
 
-            echo str_repeat('-', $width).PHP_EOL.PHP_EOL;
+            #echo str_repeat('-', $width).PHP_EOL.PHP_EOL;
         }//end foreach
 
         if ($toScreen === true

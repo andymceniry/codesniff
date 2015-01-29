@@ -1,18 +1,37 @@
 .hide { display:none; }
 a.folder_link { padding: 2px 0px 0px 8px; color:#000; font-weight:bold; float:left; }
+a.file_link { padding: 2px 0px 0px 0px; color:#000; float:left; }
 .entry_row_dir { height:18px; padding:4px 4px 4px 20px; background-position: 3px 5px; }
 .entry_row_file_generic, .entry_row_file_picture { display:none; }
 .form_row { margin:10px 0; }
 .entry_row_dir:hover {background-color:#f0f0f0;-moz-border-radius:2px;-khtml-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;}
 .entry_name { width: 400px; }
+.entry_history { width:200px; float:right; text-align:right;}
+
+.entry_history span { padding: 3px 7px 3px 8px; border-radius: 3px; margin:0 0 0 2px; min-width:21px; display:inline-block; text-align:center;}
+.entry_history .error { background:#c30; color:#fff; }
+.entry_history .warning { background:#fc0; }
+.entry_history .out-of-date { background:#fc0; min-width:64px; }
+.entry_history .not-tested { background:#eee; color:#888; min-width:64px; }
+.entry_history .all-clean { background:#bf9; color:#888; min-width:64px; }
+.entry_history .error.none, .entry_history .warning.none { background:#380; color:#fff; }
+
 .infopath { background-position: 4px 8px; background-color: #c30; padding: 10px 27px; color:#fff; }
-pre { word-wrap: break-word; line-height: 17px; }
+pre { word-wrap: break-word; line-height: 24px; }
 
 .submit_sniff { background-color: #c30; border: 1px solid #c30; }
 
-.report_summary { background:#c30; color:#fff; padding:10px 0; margin: 0 0 10px 0;}
+.report_summary { background:#c30; color:#fff; padding:10px 0; margin:10px 0 10px 0;}
 .report_summary.clean { background:#380; }
 .report_filename { background:#888; color:#fff; padding:10px 0; margin: 0 0 0px 0;}
-.report { padding: 20px 20px 20px 20px; }
+.report { padding: 20px 20px 20px 20px; width:890px; }
 
 
+
+
+
+body { width:930px; }
+
+.line-number { background: #ccc; padding: 3px 7px 3px 8px; border-radius: 3px; cursor:pointer; }
+.line-number.error { background:#c30; color:#fff; }
+.line-number.warning { background:#fc0; }

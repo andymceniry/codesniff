@@ -56,4 +56,26 @@ function returnTokenTypeCount($tokens, $type) {
 }
 
 
+
+function getLogFilename($filename) {
+    $log_filename = $filename;
+    $log_filename = str_replace('\\', '_', $log_filename);
+    $log_filename = str_replace('/', '_', $log_filename);
+    $log_filename = str_replace('___', '_', $log_filename);
+    $log_filename = str_replace(':', '', $log_filename);
+    $log_filename = str_replace('__', '_', $log_filename);
+    $log_filename = urlencode($log_filename);
+    return $log_filename;
+}
+
+function logResults($filename, $errors, $warnings ) {
+    $log_filename = getLogFilename($filename);
+    $fp = fopen('Logs/'.$log_filename, 'w');
+    $file_last_change = date("F d Y H:i:s.", filemtime($filename));
+    $file_error_count = $errors;
+    $file_warning_count = $warnings;
+    $log_content = "$file_last_change\n$file_error_count\n$file_warning_count";
+    fwrite($fp, $log_content);
+
+}
 ?>

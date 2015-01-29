@@ -623,11 +623,12 @@ class PHP_CodeSniffer_CLI
             );
         }
 
-    if($errors == 0) {
-        echo '<div class="report_summary clean">';
-        echo ' GREAT JOB. NO ERRORS AND NO WARNINGS FOUND :-) ';
-        echo '</div>';
-    }
+        if($errors == 0) {
+            echo '<div class="report_summary clean">';
+            echo ' GREAT JOB. NO ERRORS AND NO WARNINGS FOUND :-) ';
+            echo '</div>';
+            logResults($this->values['files'][0], 0, 0);
+        }
 
         // Only print PHP_Timer output if no reports were
         // printed to the screen so we don't put additional output

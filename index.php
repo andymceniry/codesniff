@@ -45,7 +45,7 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
     <input type="hidden" name="filetosniff" value="<?php echo $_GET['filetosniff']; ?>" />
     <input type="hidden" name="dir" value="current" />
     <?php echo (isset($_GET['sniff_folder_summary']) AND $_GET['sniff_folder_summary'] == 'Y') ? '<input type="hidden" name="sniff_folder_summary" value="Y"/>' : ''; ?>
-    <label for="showSources">show sources<input type="checkbox" name="showSources" id="showSources" value="Y" <?php echo isset($_GET['showSources']) ? ' checked="checked"' : ''; ?>/></label>
+    <!--<label for="showSources">show sources<input type="checkbox" name="showSources" id="showSources" value="Y" <?php #echo isset($_GET['showSources']) ? ' checked="checked"' : ''; ?>/></label>-->
     <input type="submit" value="RE-SNIFF" name="resniff" class="submit_sniff" /><br />
     </form>
     </div>
@@ -82,6 +82,72 @@ if ($handle = opendir($dir)) {
     $extensionstosniff = array('php','css');
     $typepicture = array('bmp','gif','png','jpg');
     
+    $folders = array();
+    $files = array();
+    while (false !== ($entry = readdir($handle))) {
+        if ($entry != "." && $entry != ".." && $entry != "webcodesniffer") {
+            if (is_dir($dir."/".$entry) === true) {
+                    $folders[] = $entry;
+                } else {
+                    $files[] = $entry;
+            }
+        }
+    }
+
+    sort($folders);
+    foreach($folders as $entry) {
+        ?>
+        <div class='entry_row_dir'>
+            <input type="hidden" name="dir" value="next" />
+            <a class="folder_link" href="?path=<?php echo $dir;?>&dir=next&dir_name=<?php echo $entry; ?>"/><?php echo $entry; ?></a>
+        </div>
+        <?php 
+    }
+
+
+    sort($files);
+    foreach($files as $entry) {    
+        if (in_array(pathinfo($dir."/".$entry, PATHINFO_EXTENSION), $extensionstosniff)) {
+            ?>
+            <div class='entry_row_filetosniff'>
+                <div class='entry_name'><a class="file_link" href="?path=<?php echo $dir;?>&standard=DM&sniff=TEST&dir=current&filetosniff=<?php echo $entry; ?>"/><?php echo $entry; ?></a></div>
+                <div class="entry_history">
+                <?php
+                $filename = $dir.'/'.$entry;
+                $file_last_change = date("F d Y H:i:s.", filemtime($filename));
+                $log_filename = getLogFilename($filename);
+                $log_filename = 'Codesniffer/Logs/'.urlencode($log_filename);
+
+                if (file_exists($log_filename)) {
+                    $fp = fopen($log_filename, 'r');
+                    $fp_content = array();
+                    while(! feof($fp)) {
+                        $fp_content[] = fgets($fp);
+                    }
+                    fclose($fp);
+                    if (date('U', strtotime($fp_content[0])) != date('U', strtotime($file_last_change))) {
+                        echo '<span class="out-of-date">out of date</span>';
+                    } else {
+                        if ($fp_content[1] == 0 AND $fp_content[2] == 0) {
+                            echo '<span class="all-clean"> &nbsp; </span>';
+                        } else {
+                            echo '<span class="warning none">'.$fp_content[2].'</span> <span class="error">'.$fp_content[1].'</span>';
+                        }
+                    }
+                } else {
+                    echo '<span class="not-tested"> &nbsp; </span>';
+                }
+
+                ?>
+</div>
+                <br style='clear:both;' />
+            </div>
+            <?php
+        }
+    }
+
+
+#rewinddir($handle);
     while (false !== ($entry = readdir($handle))) {
         ?>
         <form class="form_row" action="<?php echo basename(__FILE__); ?>" method="get">
