@@ -157,10 +157,10 @@ class DM_Sniffs_NamingConventions_CamelCapsFunctionNameSniff extends PHP_CodeSni
                           ucfirst($methodProps['scope']),
                           $errorData[0],
                          );
-                $phpcsFile->addError($error, $stackPtr, 'ScopeNotCamelCaps', $data);
+                $phpcsFile->addWarning($error, $stackPtr, 'ScopeNotCamelCaps', $data);
             } else {
                 $error = 'Method name "%s" is not in camel caps format';
-                $phpcsFile->addError($error, $stackPtr, 'NotCamelCaps', $errorData);
+                $phpcsFile->addWarning($error, $stackPtr, 'NotCamelCaps', $errorData);
             }
 
             return;
@@ -193,7 +193,7 @@ class DM_Sniffs_NamingConventions_CamelCapsFunctionNameSniff extends PHP_CodeSni
             $magicPart = strtolower(substr($functionName, 2));
             if (in_array($magicPart, $this->magicFunctions) === false) {
                  $error = 'Function name "%s" is invalid; only PHP magic methods should be prefixed with a double underscore';
-                 $phpcsFile->addError($error, $stackPtr, 'FunctionDoubleUnderscore', $errorData);
+                 $phpcsFile->addWarning($error, $stackPtr, 'FunctionDoubleUnderscore', $errorData);
             }
 
             return;
@@ -204,7 +204,7 @@ class DM_Sniffs_NamingConventions_CamelCapsFunctionNameSniff extends PHP_CodeSni
 
         if (PHP_CodeSniffer::isCamelCaps($functionName, false, true, $this->strict) === false) {
             $error = 'Function name "%s" is not in camel caps format';
-            $phpcsFile->addError($error, $stackPtr, 'NotCamelCaps', $errorData);
+            $phpcsFile->addWarning($error, $stackPtr, 'NotCamelCaps', $errorData);
         }
 
 

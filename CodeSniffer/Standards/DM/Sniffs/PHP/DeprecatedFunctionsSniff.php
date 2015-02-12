@@ -42,6 +42,12 @@ class DM_Sniffs_PHP_DeprecatedFunctionsSniff extends DM_Sniffs_PHP_ForbiddenFunc
      */
     protected $forbiddenFunctions = array();
 
+    /**
+     * If true, an error will be thrown; otherwise a warning.
+     *
+     * @var bool
+     */
+    public $error = false;
 
     /**
      * Constructor.

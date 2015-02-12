@@ -68,14 +68,53 @@ function getLogFilename($filename) {
     return $log_filename;
 }
 
-function logResults($filename, $errors, $warnings ) {
+function logResults($filename, $errors, $warnings, $log_folder = 'Logs' ) {
     $log_filename = getLogFilename($filename);
-    $fp = fopen('Logs/'.$log_filename, 'w');
+    $fp = fopen($log_folder.'/'.$log_filename, 'w');
     $file_last_change = date("F d Y H:i:s.", filemtime($filename));
     $file_error_count = $errors;
     $file_warning_count = $warnings;
     $log_content = "$file_last_change\n$file_error_count\n$file_warning_count";
     fwrite($fp, $log_content);
+
+}
+
+
+function includeJslintFiles( $url) {
+
+?>
+<div class="report_filename"><p></p><input type="image" src="wcs_images/refresh.png" class="submit_back sniff-refresh" onclick="location.reload();"></div><div class="report_summary"> &nbsp; </div></pre></div>
+
+<script src="jslint/web_jslint.js"></script>
+<script src="jquery-1.10.2.min.js"></script>
+<script src="jslint/lint_remote_file.js"></script>
+
+<div id="JSLINT_" style="display:none;">
+    <div id=JSLINT_EDITION></div>
+    <div id=JSLINT_SOURCE><textarea></textarea></div>
+    <div id=JSLINT_BUTTON></div>
+    <div id=JSLINT_ERRORS></div>
+    <div id=JSLINT_REPORT></div>
+    <div id=JSLINT_PROPERTIES><textarea></textarea></div>
+    <div id=JSLINT_OPTIONS></div>
+    <input id=JSLINT_INDENT>
+    <input id=JSLINT_MAXLEN>
+    <input id=JSLINT_MAXERR>
+    <textarea id=JSLINT_PREDEF></textarea>
+    <div id=JSLINT_JSLINT><textarea></textarea></div>
+    <script>ADSAFE.id("JSLINT_");</script>
+    <script src="jslint/init_ui.js"></script>
+    <script>
+    ADSAFE.go("JSLINT_", function (dom, lib) {
+        'use strict';
+        lib.init_ui(dom);
+        <?php
+        echo 'lintExternalFile(lib, "'.$url.'");'."\n";
+        ?>
+    });
+    </script>
+</div>
+<?php
 
 }
 ?>

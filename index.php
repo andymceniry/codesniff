@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
+ini_set('max_execution_time', 300);
 include_once('dm_functions.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -49,10 +50,15 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
     $url = $_GET['path'] . '/' . $_GET['filetosniff'];
     $_SERVER['argv'] = array("phpcs.php",$standard,$url);
     
-    
     echo '<div class="report"><pre>';
-    $r = include 'phpcs.php';
-    echo '</pre></div>';
+    if (pathinfo($url, PATHINFO_EXTENSION) == 'js') {
+        includeJslintFiles($url);
+        die();
+    } else {
+        $r = include 'phpcs.php';
+        echo '</pre></div>';
+    }
+    
 
     exit;
 }
@@ -73,7 +79,7 @@ echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'</p>';
 
     echo '<div class="entry_row_holder">';
 
-    $extensionstosniff = array('php','css');
+    $extensionstosniff = array('php','css', 'js');
     $typepicture = array('bmp','gif','png','jpg');
     
     $folders = array();
@@ -89,6 +95,7 @@ echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'</p>';
             }
         }
     }
+
 
     sort($folders);
     foreach($folders as $entry) {

@@ -146,7 +146,7 @@ class DM_Sniffs_NamingConventions_UpperCaseConstantNameSniff implements PHP_Code
                       $prefix.strtoupper($constName),
                       $prefix.$constName,
                      );
-            $phpcsFile->addError($error, $stackPtr, 'ConstantNotUpperCase', $data);
+            $phpcsFile->addWarning($error, $stackPtr, 'ConstantNotUpperCase', $data);
         }
 
     }//end process()

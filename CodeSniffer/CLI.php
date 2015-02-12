@@ -448,14 +448,18 @@ class PHP_CodeSniffer_CLI
         // We don't know about any additional switches; just files.
         if ($arg{0} === '-') {
             echo 'ERROR: option "'.$arg.'" not known.'.PHP_EOL.PHP_EOL;
+            echo '<!--';
             $this->printUsage();
+            echo '-->';
             exit(2);
         }
 
         $file = realpath($arg);
         if (file_exists($file) === false) {
             echo 'ERROR: The file "'.$arg.'" does not exist.'.PHP_EOL.PHP_EOL;
+            echo '<!--';
             $this->printUsage();
+            echo '-->';
             exit(2);
         } else {
             $values['files'][] = $file;
