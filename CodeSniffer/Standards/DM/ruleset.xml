@@ -22,6 +22,11 @@
       <exclude name="DM.ControlStructures.InlineIfDeclaration.NotSingleLine"/>
     </rule>
 
+    <!--  Error Message: Closing parenthesis of a multi-line IF statement must be on a new line  -->
+    <rule ref="DM.ControlStructures.MultiLineCondition.CloseBracketNewLine">
+      <exclude name="DM.ControlStructures.MultiLineCondition.CloseBracketNewLine"/>
+    </rule>
+
     <!--  Error Message: Case breaking statement must be indented 4 spaces from SWITCH keyword  -->
     <rule ref="DM.ControlStructures.SwitchDeclaration.BreakIndent">
       <exclude name="DM.ControlStructures.SwitchDeclaration.BreakIndent"/>
