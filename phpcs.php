@@ -37,9 +37,20 @@ $phpcs->checkRequirements();
 $numErrors = $phpcs->process();
 
 if ($numErrors === 0) {
-    exit(0);
+    $icoName = 'tick';
+    #exit(0);
 } else {
-    exit(1);
+    $icoName = 'cross';
+    #exit(1);
 }
 
 ?>
+<script>
+(function() {
+    var link = document.createElement('link');
+    link.type = 'image/x-icon';
+    link.rel = 'shortcut icon';
+    link.href = 'wcs_images/<?php echo $icoName; ?>.ico';
+    document.getElementsByTagName('head')[0].appendChild(link);
+}());
+</script>

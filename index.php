@@ -55,16 +55,14 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
         includeJslintFiles($url);
         die();
     } else {
-        $r = include 'phpcs.php';
-        echo '</pre></div>';
+        include 'phpcs.php';
     }
     
 
     exit;
 }
 
-if ($handle = opendir($dir)) {
-echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'</p>';
+if (is_dir($dir) AND $handle = opendir($dir)) {
 
     if ($dir != dirname(getcwd())) {
         ?>
@@ -153,6 +151,9 @@ echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'</p>';
     }
 
     echo '</div>';
+} else {
+    echo "<p>Invalid Directory '$dir'</p>";
+    echo "<p>Redirecting...</p>";
 }
 ?>
 
