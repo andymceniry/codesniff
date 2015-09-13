@@ -14,7 +14,6 @@ include_once('dm_functions.php');
 <link rel="stylesheet" href="dm_styles.css" type="text/css" />
 <body>
 
-<br style='clear:both;' />
 
 <?php
 if (isset($_GET['dir'])) {
@@ -31,7 +30,7 @@ if (isset($_GET['dir'])) {
 
 
 if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
-    echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'</p>';
+    echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'/'.$_GET['filetosniff'].'</p>';
         ?>
         <form action="<?php echo basename(__FILE__); ?>" method="get" class="header-back-btn">
         <input type="hidden" name="path" value="<?php echo $dir; ?>" />    
@@ -63,7 +62,7 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
 }
 
 if (is_dir($dir) AND $handle = opendir($dir)) {
-
+echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'</p>';
     if ($dir != dirname(getcwd())) {
         ?>
         <form action="<?php echo basename(__FILE__); ?>" method="get" class="header-back-btn">

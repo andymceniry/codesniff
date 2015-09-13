@@ -29,7 +29,7 @@ pre { word-wrap: break-word; line-height: 24px; }
 
 .submit_sniff { background-color: #c30; border: 1px solid #c30; }
 
-.report_summary { background:#c30; color:#fff; padding:10px 0; margin:10px 0 10px 0;}
+.report_summary { background:#c30; color:#fff; padding:10px 0; margin:0px 0 10px 0;}
 .report_summary.clean { background:#380; }
 .report_filename { background:#aaa; color:#333; height: 24px; padding: 10px; margin: 0 0 0px 0;}
 .report_filename p {line-height:24px; float:left; }

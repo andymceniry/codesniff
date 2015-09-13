@@ -59,7 +59,7 @@ class PHP_CodeSniffer_Reports_Full implements PHP_CodeSniffer_Report
 
 
             echo PHP_EOL;
-            echo '<div class="report_filename">';            
+            echo '<div class="report_filename hide">';            
             echo '<p>FILE: ';
             $theFile = basename($filename);
             if (strlen($theFile) <= ($width - 9)) {
