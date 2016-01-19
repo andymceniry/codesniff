@@ -12,6 +12,14 @@ include_once('dm_functions.php');
 <link rel="shortcut icon" href="wcs_images/favicon.ico" />
 <link rel="stylesheet" href="wcs_styles.css" type="text/css" />
 <link rel="stylesheet" href="dm_styles.css" type="text/css" />
+<?php
+if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='' AND isset($_GET['update']) AND $_GET['update'] !='') {
+    $_GET['update'] = intval($_GET['update']) < 30 ? 30 : $_GET['update'];
+    echo '<meta http-equiv="refresh" content="'.$_GET['update'].'">';
+}
+?>
+</head>
+
 <body>
 
 
