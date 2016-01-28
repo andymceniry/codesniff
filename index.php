@@ -117,7 +117,7 @@ echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'</p>';
     foreach($files as $entry) {
             ?>
             <div class='entry_row_filetosniff'>
-                <div class='entry_name'><a class="file_link" href="?path=<?php echo $dir;?>&standard=DM&sniff=TEST&dir=current&filetosniff=<?php echo $entry; ?>"/><?php echo $entry; ?></a></div>
+                <div class='entry_name'><a class="file_link" href="?path=<?php echo $dir;?>&standard=DM&sniff=TEST&dir=current&filetosniff=<?php echo $entry; ?>&update=30"/><?php echo $entry; ?></a></div>
                 <div class="entry_history">
                 <?php
                 $filename = $dir.'/'.$entry;
