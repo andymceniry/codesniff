@@ -33,14 +33,14 @@ class DM_Sniffs_Metrics_NestingLevelSniff implements PHP_CodeSniffer_Sniff
      *
      * @var int
      */
-    public $nestingLevel = 5;
+    public $nestingLevel = 7;
 
     /**
      * A nesting level than this value will throw an error.
      *
      * @var int
      */
-    public $absoluteNestingLevel = 10;
+    public $absoluteNestingLevel = 12;
 
 
     /**
