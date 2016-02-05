@@ -82,7 +82,7 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
 }
 
 if (is_dir($dir) AND $handle = opendir($dir)) {
-echo '<div class="infopath clearfix"><p>' . str_replace('\\', '/', $dir).'</p>';
+echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('\\', '/', $dir)).'</p>';
     if ($dir != dirname(getcwd())) {
         ?>
         <form action="<?php echo basename(__FILE__); ?>" method="get" class="header-back-btn">
