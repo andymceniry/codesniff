@@ -595,7 +595,7 @@ class PHP_CodeSniffer
                 throw new PHP_CodeSniffer_Exception("Ruleset $standard is not valid");
             }
 
-            if (basename($standard) === 'ruleset.xml') {
+            if (basename($standard) === 'laravel.xml') {
                 // The ruleset uses the generic name, so this may actually
                 // be a complete standard with it's own sniffs. By setting the
                 // the standardDir to be the directory, we will process both
@@ -629,7 +629,7 @@ class PHP_CodeSniffer
                     }
 
                     // See comments in ELSE IF condition above for why we do this.
-                    if (basename($path) === 'ruleset.xml') {
+                    if (basename($path) === 'laravel.xml') {
                         self::$standardDir = dirname($path);
                     } else {
                         self::$standardDir = $path;
@@ -738,7 +738,18 @@ class PHP_CodeSniffer
         if ($standard !== null) {
             $rulesetPath = $dir;
             if (is_dir($rulesetPath) === true) {
-                $rulesetPath .= '/ruleset.xml';
+
+                $file = 'ruleset.xml';
+                if (file_exists('../env.php')) {
+                    include('../env.php');
+                    foreach($env['rulesets'] as $dirRoot => $ruleset) {
+                        if (substr(strtolower($_GET['path']), 0, strlen($dirRoot)) === strtolower($dirRoot)) {
+                            $file = $ruleset;
+                        }
+                    }
+                    
+                }
+                $rulesetPath .= '/'.$file;
             }
 
             $ruleset = simplexml_load_file($rulesetPath);
@@ -1857,7 +1868,7 @@ class PHP_CodeSniffer
                 }
 
                 // Valid coding standard dirs include a standard class.
-                $csFile = $file->getPathname().'/ruleset.xml';
+                $csFile = $file->getPathname().'/laravel.xml';
                 if (is_file($csFile) === true) {
                     // We found a coding standard directory.
                     $installedStandards[] = $filename;
@@ -1886,12 +1897,12 @@ class PHP_CodeSniffer
     {
         $standardDir  = dirname(__FILE__);
         $standardDir .= '/CodeSniffer/Standards/'.$standard;
-        if (is_file($standardDir.'/ruleset.xml') === true) {
+        if (is_file($standardDir.'/laravel.xml') === true) {
             return true;
         } else {
             // This could be a custom standard, installed outside our
             // standards directory.
-            $ruleset = rtrim($standard, ' /\\').DIRECTORY_SEPARATOR.'ruleset.xml';
+            $ruleset = rtrim($standard, ' /\\').DIRECTORY_SEPARATOR.'laravel.xml';
             if (is_file($ruleset) === true) {
                 return true;
             }

@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<ruleset name="DM">
+
+    <description>Digital Marmalade's coding standard which builds on PSR2.</description>
+    <rule ref="PSR2"/>
+
+    <!--  Rules we want to exclude  -->
+
+
+    <!--  Error Message: Avoid function calls in a FOR loop test part  -->
+    <rule ref="DM.CodeAnalysis.ForLoopWithTestFunctionCall.NotAllowed">
+      <exclude name="DM.CodeAnalysis.ForLoopWithTestFunctionCall.NotAllowed"/>
+    </rule>
+
+    <!--  Error Message: Usage of ELSEIF not allowed; use ELSE IF instead  -->
+    <rule ref="DM.ControlStructures.ElseIfDeclaration.NotAllowed">
+      <exclude name="DM.ControlStructures.ElseIfDeclaration.NotAllowed"/>
+    </rule>
+
+    <!--  Error Message: Inline shorthand IF statement must be declared on a single line  -->
+    <rule ref="DM.ControlStructures.InlineIfDeclaration.NotSingleLine">
+      <exclude name="DM.ControlStructures.InlineIfDeclaration.NotSingleLine"/>
+    </rule>
+
+    <!--  Error Message: Closing parenthesis of a multi-line IF statement must be on a new line  -->
+    <rule ref="DM.ControlStructures.MultiLineCondition.CloseBracketNewLine">
+      <exclude name="DM.ControlStructures.MultiLineCondition.CloseBracketNewLine"/>
+    </rule>
+
+    <!--  Error Message: Case breaking statement must be indented 4 spaces from SWITCH keyword  -->
+    <rule ref="DM.ControlStructures.SwitchDeclaration.BreakIndent">
+      <exclude name="DM.ControlStructures.SwitchDeclaration.BreakIndent"/>
+    </rule>
+
+    <!--  Error Message: File must end with a newline character  -->
+    <rule ref="DM.Files.EndFileNewline.NotFound">
+      <exclude name="DM.Files.EndFileNewline.NotFound"/>
+    </rule>
+
+    <!--  Error Message: PHP files must only contain PHP code  -->
+    <rule ref="DM.Files.InlineHTML.Found">
+      <exclude name="DM.Files.InlineHTML.Found"/>
+    </rule>
+
+    <!--  Error Message: End of line character is invalid; expected "\n" but found "\r\n"  -->
+    <rule ref="DM.Files.LineEndings.InvalidEOLChar">
+      <exclude name="DM.Files.LineEndings.InvalidEOLChar"/>
+    </rule>
+
+    <!--  Error Message: Line exceeds 80 characters; contains 88 characters  -->
+    <rule ref="DM.Files.LineLength.TooLong">
+      <exclude name="DM.Files.LineLength.TooLong"/>
+    </rule>
+
+    <!--  Error Message: Equals sign not aligned with surrounding assignments; expected 7 spaces but found 1 space  -->
+    <rule ref="DM.Formatting.MultipleStatementAlignment.NotSameWarning">
+      <exclude name="DM.Formatting.MultipleStatementAlignment.NotSameWarning"/>
+    </rule>
+
+    <!--  Error Message: A cast statement must not be followed by a space  -->
+    <rule ref="DM.Formatting.NoSpaceAfterCast.SpaceFound">
+      <exclude name="DM.Formatting.NoSpaceAfterCast.SpaceFound"/>
+    </rule>
+
+    <!--  Error Message: Incorrect spacing between argument "$aaExistingData" and equals sign; expected 0 but found 1  -->
+    <rule ref="DM.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals">
+      <exclude name="DM.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+    </rule>
+
+    <!--  Error Message: Consider putting global function "xml2json" in a static class  -->
+    <rule ref="DM.Functions.GlobalFunction.Found">
+      <exclude name="DM.Functions.GlobalFunction.Found"/>
+    </rule>
+
+    <!--  Error Message: The opening PHP tag must be the first content in the file  -->
+    <rule ref="DM.PHP.CharacterBeforePHPOpeningTag.Found">
+      <exclude name="DM.PHP.CharacterBeforePHPOpeningTag.Found"/>
+    </rule>
+
+    <!--  Error Message: TRUE, FALSE and NULL must be lowercase; expected "null" but found "NULL"  -->
+    <rule ref="DM.PHP.LowerCaseConstant.Found">
+      <exclude name="DM.PHP.LowerCaseConstant.Found"/>
+    </rule>
+
+    <!--  Error Message: PHP keywords must be lowercase; expected "and" but found "AND"  -->
+    <rule ref="DM.PHP.LowerCaseKeyword.Found">
+      <exclude name="DM.PHP.LowerCaseKeyword.Found"/>
+    </rule>
+
+    <!--  Error Message: TRUE, FALSE and NULL must be uppercase; expected "TRUE" but found "true"  -->
+    <rule ref="DM.PHP.UpperCaseConstant.Found">
+      <exclude name="DM.PHP.UpperCaseConstant.Found"/>
+    </rule>
+
+    <!--  Error Message: Visibility must be declared on method "__construct"  -->
+    <rule ref="DM.Scope.MethodScope.Missing">
+      <exclude name="DM.Scope.MethodScope.Missing"/>
+    </rule>
+
+    <!--  Error Message: No blank line found after control structure  -->
+    <rule ref="DM.WhiteSpace.ControlStructureSpacing.NoLineAfterClose">
+      <exclude name="DM.WhiteSpace.ControlStructureSpacing.NoLineAfterClose"/>
+    </rule>
+
+    <!--  Error Message: Tabs must be used to indent lines; spaces are not allowed  -->
+    <rule ref="DM.WhiteSpace.DisallowSpaceIndent.TabsUsed">
+      <exclude name="DM.WhiteSpace.DisallowSpaceIndent.TabsUsed"/>
+    </rule>
+
+    <!--  Error Message: Expected 2 blank lines after function; 1 found  -->
+    <rule ref="DM.WhiteSpace.FunctionSpacing.After">
+      <exclude name="DM.WhiteSpace.FunctionSpacing.After"/>
+    </rule>
+
+    <!--  Error Message: Expected 0 blank lines after opening function brace; 4 found  -->
+    <rule ref="DM.WhiteSpace.FunctionOpeningBraceSpace.SpacingAfter">
+      <exclude name="DM.WhiteSpace.FunctionOpeningBraceSpace.SpacingAfter"/>
+    </rule>
+
+    <!--  Error Message: Each class must be in a namespace of at least one level (a top-level vendor name)  -->
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+      <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+    </rule>
+
+    <!--  Warning Message: A file should declare new symbols (classes, functions, constants, etc.) and cause no other side effects, or it should execute logic with side effects, but should not do both. The first symbol is defined on line 36 and the first side effect is on line 21.  -->
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+      <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/>
+    </rule>
+
+    <!--  Error Message: The closing brace for the class must go on the next line after the body  -->
+    <rule ref="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody">
+      <exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
+    </rule>
+
+    <!--  Error Message: Expected 1 newline at end of file; 0 found  -->
+    <rule ref="PSR2.Files.EndFileNewline.NoneFound">
+      <exclude name="PSR2.Files.EndFileNewline.NoneFound"/>
+    </rule>
+
+    <!--  Error Message: Expected 1 blank line at end of file; 0 found  -->
+    <rule ref="PSR2.Files.EndFileWhitespace.NotFound">
+      <exclude name="PSR2.Files.EndFileWhitespace.NotFound"/>
+    </rule>
+
+    <!--  Duplicate: DM.Functions.FunctionCallSignature.SpaceAfterOpenBracket  -->
+    <rule ref="DM.Methods.FunctionCallSignature.SpaceAfterOpenBracket">
+      <exclude name="DM.Methods.FunctionCallSignature.SpaceAfterOpenBracket"/>
+    </rule>
+
+</ruleset>

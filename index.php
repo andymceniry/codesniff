@@ -1,7 +1,16 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
 ini_set('max_execution_time', 300);
-include_once('dm_functions.php');
+include_once 'dm_functions.php';
+if (file_exists('env.php')) {
+    include 'env.php';
+}
+
+if (isset($env) AND array_key_exists('default_url', $env) AND $_SERVER['QUERY_STRING'] === '') {
+    header('location: ' . $env['default_url']);
+    die();
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -13,7 +22,7 @@ include_once('dm_functions.php');
 <link rel="stylesheet" href="wcs_styles.css" type="text/css" />
 <link rel="stylesheet" href="dm_styles.css" type="text/css" />
 <?php
-if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='' AND isset($_GET['update']) AND $_GET['update'] !='') {
+if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] != '' AND isset($_GET['update']) AND $_GET['update'] != '') {
     $_GET['update'] = intval($_GET['update']) < 30 ? 30 : $_GET['update'];
     echo '<meta http-equiv="refresh" content="'.$_GET['update'].'">';
 }
@@ -26,18 +35,19 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='' AND isset($_GET['u
 <?php
 if (isset($_GET['dir'])) {
     if ($_GET['dir'] == 'previous') {
-        $dir = dirname($_GET['path']);    
+        $dir = dirname($_GET['path']);
     } elseif ($_GET['dir'] == 'current') {
-        $dir = $_GET['path'];    
-    } elseif ($_GET['dir'] == 'next') {    
+        $dir = $_GET['path'];
+    } elseif ($_GET['dir'] == 'next') {
         $dir = $_GET['path'] . '/' . $_GET['dir_name'];
     }
 } else {
     $dir = dirname(getcwd());
+
 }
 
 
-if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
+if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] != '') {
 
     //  check for open file
     if (array_key_exists('view', $_GET) AND $_GET['view'] != '') {
@@ -53,22 +63,22 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
     echo '<div class="infopath clearfix"><p><a href="http://'.$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'].'&view='.$file_link.'">' . $file_anchor .'</a></p>';
         ?>
         <form action="<?php echo basename(__FILE__); ?>" method="get" class="header-back-btn">
-        <input type="hidden" name="path" value="<?php echo $dir; ?>" />    
+        <input type="hidden" name="path" value="<?php echo $dir; ?>" />
         <input type="hidden" name="dir" value="current" />
         <input type="image" src="wcs_images/back.png" class="submit_back" />
         </form>
     </div>
 
     <?php
-    
+
     $_SERVER['argc'] = 3;
     $standard = '--standard=' . $_GET['standard'];
-    if(array_key_exists('sniff_folder_summary', $_GET) AND $_GET['sniff_folder_summary'] == 'Y') {
+    if (array_key_exists('sniff_folder_summary', $_GET) AND $_GET['sniff_folder_summary'] == 'Y') {
         $standard = '--report=summary';
     }
     $url = $_GET['path'] . '/' . $_GET['filetosniff'];
     $_SERVER['argv'] = array("phpcs.php",$standard,$url);
-    
+
     echo '<div class="report"><pre>';
     if (pathinfo($url, PATHINFO_EXTENSION) == 'js') {
         includeJslintFiles($url);
@@ -76,7 +86,7 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] !='') {
     } else {
         include 'phpcs.php';
     }
-    
+
 
     exit;
 }
@@ -86,7 +96,7 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
     if ($dir != dirname(getcwd())) {
         ?>
         <form action="<?php echo basename(__FILE__); ?>" method="get" class="header-back-btn">
-        <input type="hidden" name="path" value="<?php echo $dir; ?>" />    
+        <input type="hidden" name="path" value="<?php echo $dir; ?>" />
         <input type="hidden" name="dir" value="previous" />
         <input type="image" src="wcs_images/back.png" class="submit_back" />
         </form>
@@ -98,21 +108,22 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
 
     $extensionstosniff = array('php','css', 'js');
     $typepicture = array('bmp','gif','png','jpg');
-    
+
     $folders = array();
     $files = array();
     while (false !== ($entry = readdir($handle))) {
         if ($entry != "." && $entry != ".." && $entry != "webcodesniffer") {
             if (is_dir($dir."/".$entry) === true) {
-                    $folders[] = $entry;
-                } else {
-                    if (in_array(pathinfo($dir."/".$entry, PATHINFO_EXTENSION), $extensionstosniff)) {
+                $folders[] = $entry;
+            } else {
+                if (in_array(pathinfo($dir."/".$entry, PATHINFO_EXTENSION), $extensionstosniff)) {
+                    if (substr($entry, -6) !== 'min.js' AND substr($entry, -7) !== 'min.css') {
                         $files[] = $entry;
                     }
+                }
             }
         }
     }
-
 
     sort($folders);
     foreach($folders as $entry) {
@@ -121,7 +132,7 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
             <input type="hidden" name="dir" value="next" />
             <a class="folder_link" href="?path=<?php echo $dir;?>&dir=next&dir_name=<?php echo $entry; ?>"/><?php echo $entry; ?></a>
         </div>
-        <?php 
+        <?php
     }
 
 
