@@ -125,4 +125,23 @@ function includeJslintFiles( $url)
 
 }
 
+function updateIcon($type)
+{
+    $icons['good'] = 'tick';
+    $icons['bad'] = 'cross';
+
+    $icoName = $icons[$type];
+?>
+<script>
+(function() {
+    var link = document.createElement('link');
+    link.type = 'image/x-icon';
+    link.rel = 'shortcut icon';
+    link.href = 'wcs_images/<?php echo $icoName; ?>.ico';
+    document.getElementsByTagName('head')[0].appendChild(link);
+}());
+</script>
+<?php
+
+}
 ?>

@@ -178,6 +178,13 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
 
     if (count($folders) < 1 AND count($files) < 1) {
         echo '<p><b> &nbsp; &nbsp; &nbsp; no matching files or folders found.</b></p>';
+    } else {
+        if ($countGood === count($files)) {
+            updateIcon('good');
+        }
+        if ($countBad > 0) {
+            updateIcon('bad');
+        }
     }
 
     echo '</div>';
