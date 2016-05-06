@@ -12,6 +12,11 @@
       <exclude name="DM.CodeAnalysis.ForLoopWithTestFunctionCall.NotAllowed"/>
     </rule>
 
+    <!--  Error Message: The method parameter $request is never used  -->
+    <rule ref="DM.CodeAnalysis.UnusedFunctionParameter.Found">
+      <exclude name="DM.CodeAnalysis.UnusedFunctionParameter.Found"/>
+    </rule>
+
     <!--  Error Message: Usage of ELSEIF not allowed; use ELSE IF instead  -->
     <rule ref="DM.ControlStructures.ElseIfDeclaration.NotAllowed">
       <exclude name="DM.ControlStructures.ElseIfDeclaration.NotAllowed"/>
@@ -160,6 +165,11 @@
     <!--  Duplicate: DM.Functions.FunctionCallSignature.SpaceAfterOpenBracket  -->
     <rule ref="DM.Methods.FunctionCallSignature.SpaceAfterOpenBracket">
       <exclude name="DM.Methods.FunctionCallSignature.SpaceAfterOpenBracket"/>
+    </rule>
+
+    <!--  Error Message: Method name "xxx" should not be prefixed with an underscore to indicate visibility  -->
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+      <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
     </rule>
 
 </ruleset>
