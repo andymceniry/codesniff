@@ -127,6 +127,11 @@
       <exclude name="DM.WhiteSpace.DisallowSpaceIndent.TabsUsed"/>
     </rule>
 
+    <!--  Error Message: Expected 1 blank line before closing function brace; 0 found  -->
+    <rule ref="DM.WhiteSpace.FunctionClosingBraceSpace.SpacingBeforeClose">
+      <exclude name="DM.WhiteSpace.FunctionClosingBraceSpace.SpacingBeforeClose"/>
+    </rule>
+
     <!--  Error Message: Expected 2 blank lines after function; 1 found  -->
     <rule ref="DM.WhiteSpace.FunctionSpacing.After">
       <exclude name="DM.WhiteSpace.FunctionSpacing.After"/>
@@ -135,6 +140,11 @@
     <!--  Error Message: Expected 0 blank lines after opening function brace; 4 found  -->
     <rule ref="DM.WhiteSpace.FunctionOpeningBraceSpace.SpacingAfter">
       <exclude name="DM.WhiteSpace.FunctionOpeningBraceSpace.SpacingAfter"/>
+    </rule>
+
+    <!--  Error Message: Expected 1 blank line before member var; 0 found  -->
+    <rule ref="DM.WhiteSpace.MemberVarSpacing.Incorrect">
+      <exclude name="DM.WhiteSpace.MemberVarSpacing.Incorrect"/>
     </rule>
 
     <!--  Error Message: Each class must be in a namespace of at least one level (a top-level vendor name)  -->
