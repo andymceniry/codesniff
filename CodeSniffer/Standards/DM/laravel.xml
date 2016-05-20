@@ -147,6 +147,11 @@
       <exclude name="DM.WhiteSpace.MemberVarSpacing.Incorrect"/>
     </rule>
 
+    <!--  Error Message: Space found before object operator  -->
+    <rule ref="DM.WhiteSpace.ObjectOperatorSpacing.Before">
+      <exclude name="DM.WhiteSpace.ObjectOperatorSpacing.Before"/>
+    </rule>
+
     <!--  Error Message: Each class must be in a namespace of at least one level (a top-level vendor name)  -->
     <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
       <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
