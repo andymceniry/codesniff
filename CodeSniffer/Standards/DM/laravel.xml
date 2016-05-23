@@ -77,6 +77,11 @@
       <exclude name="DM.Formatting.NoSpaceAfterCast.SpaceFound"/>
     </rule>
 
+    <!--  Error Message: Opening parenthesis of a multi-line function call must be the last content on the line  -->
+    <rule ref="DM.Functions.FunctionCallSignature.ContentAfterOpenBracket">
+      <exclude name="DM.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
+    </rule>
+
     <!--  Error Message: Incorrect spacing between argument "$aaExistingData" and equals sign; expected 0 but found 1  -->
     <rule ref="DM.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals">
       <exclude name="DM.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
