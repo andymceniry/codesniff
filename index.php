@@ -130,7 +130,7 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
         ?>
         <div class='entry_row_dir'>
             <input type="hidden" name="dir" value="next" />
-            <a class="folder_link" href="?path=<?php echo $dir;?>&dir=next&dir_name=<?php echo $entry; ?>"/><?php echo $entry; ?></a>
+            <a class="folder_link" href="?path=<?php echo $dir;?>&dir=next&dir_name=<?php echo $entry; ?><?php echo isset($_GET['showhash']) ? '&showhash' : ''; ?>"/><?php echo $entry; ?></a>
         </div>
         <?php
     }
@@ -138,12 +138,24 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
 
     sort($files);
     foreach($files as $entry) {
+
+            $filename = $dir.'/'.$entry;
             ?>
             <div class='entry_row_filetosniff'>
-                <div class='entry_name'><a class="file_link" href="?path=<?php echo $dir;?>&standard=DM&sniff=TEST&dir=current&filetosniff=<?php echo $entry; ?>&update=30"/><?php echo $entry; ?></a></div>
+                <div class='entry_name'>
+                    <a class="file_link" href="?path=<?php echo $dir;?>&standard=DM&sniff=TEST&dir=current&filetosniff=<?php echo $entry; ?>&update=30"/>
+                        <?php
+                        if(isset($_GET['showhash'])) {
+                            $hash = substr(md5(file_get_contents($filename)), 0, 8);
+                            echo '<span class="hash">' . $hash . '</span>';
+                        }
+                        ?>
+                        <?php echo $entry; ?>
+                    </a>
+                </div>
                 <div class="entry_history">
                 <?php
-                $filename = $dir.'/'.$entry;
+                
                 $file_last_change = date("F d Y H:i:s.", filemtime($filename));
                 $log_filename = getLogFilename($filename);
                 $log_filename = 'Codesniffer/Logs/'.urlencode($log_filename);
