@@ -14,7 +14,8 @@ a.file_link { padding: 2px 0px 0px 0px; color:#000; float:left; }
 .entry_row_filetosniff { background-color:#e8e8e8; }
 .entry_row_filetosniff:nth-child(even) { background-color:#f0f0f0; }
 .entry_name { width: 400px; }
-.entry_name span.hash { font-family:monospace;margin-right:10px; }
+.hash { font-family:monospace;margin-right:10px; }
+.allfileshash { color:#900; margin: 10px 47px; }
 .entry_history { width:200px; float:right; text-align:right;}
 
 .entry_history span { padding: 3px 7px 3px 8px; border-radius: 3px; margin:0 0 0 2px; min-width:24px; display:inline-block; text-align:center;}

@@ -65,6 +65,8 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] != '') {
         <form action="<?php echo basename(__FILE__); ?>" method="get" class="header-back-btn">
         <input type="hidden" name="path" value="<?php echo $dir; ?>" />
         <input type="hidden" name="dir" value="current" />
+        <?php echo isset($_GET['showhash']) ? '<input type="hidden" name="showhash" value="" />' : ''; ?>
+        <?php echo isset($_GET['filter']) ? '<input type="hidden" name="filter" value="'.$_GET['filter'].'" />' : ''; ?>
         <input type="image" src="wcs_images/back.png" class="submit_back" />
         </form>
     </div>
@@ -98,6 +100,8 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
         <form action="<?php echo basename(__FILE__); ?>" method="get" class="header-back-btn">
         <input type="hidden" name="path" value="<?php echo $dir; ?>" />
         <input type="hidden" name="dir" value="previous" />
+        <?php echo isset($_GET['showhash']) ? '<input type="hidden" name="showhash" value="" />' : ''; ?>
+        <?php echo isset($_GET['filter']) ? '<input type="hidden" name="filter" value="'.$_GET['filter'].'" />' : ''; ?>
         <input type="image" src="wcs_images/back.png" class="submit_back" />
         </form>
         <?php
@@ -130,62 +134,66 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
         ?>
         <div class='entry_row_dir'>
             <input type="hidden" name="dir" value="next" />
-            <a class="folder_link" href="?path=<?php echo $dir;?>&dir=next&dir_name=<?php echo $entry; ?><?php echo isset($_GET['showhash']) ? '&showhash' : ''; ?>"/><?php echo $entry; ?></a>
+            <?php echo isset($_GET['showhash']) ? '<input type="hidden" name="showhash" value="" />' : ''; ?>
+            <?php echo isset($_GET['filter']) ? '<input type="hidden" name="filter" value="'.$_GET['filter'].'" />' : ''; ?>
+            <a class="folder_link" href="?path=<?php echo $dir;?>&dir=next&dir_name=<?php echo $entry; ?><?php echo isset($_GET['showhash']) ? '&showhash' : ''; ?><?php echo isset($_GET['filter']) ? '&filter='.$_GET['filter'] : ''; ?>"/><?php echo $entry; ?></a>
         </div>
         <?php
     }
 
-
+    $hashOfFileHashes = '';
     sort($files);
     foreach($files as $entry) {
-
-            $filename = $dir.'/'.$entry;
-            ?>
-            <div class='entry_row_filetosniff'>
-                <div class='entry_name'>
-                    <a class="file_link" href="?path=<?php echo $dir;?>&standard=DM&sniff=TEST&dir=current&filetosniff=<?php echo $entry; ?>&update=30"/>
-                        <?php
-                        if(isset($_GET['showhash'])) {
-                            $hash = substr(md5(file_get_contents($filename)), 0, 8);
-                            echo '<span class="hash">' . $hash . '</span>';
-                        }
-                        ?>
-                        <?php echo $entry; ?>
-                    </a>
-                </div>
-                <div class="entry_history">
-                <?php
-                
-                $file_last_change = date("F d Y H:i:s.", filemtime($filename));
-                $log_filename = getLogFilename($filename);
-                $log_filename = 'Codesniffer/Logs/'.urlencode($log_filename);
-
-                if (file_exists($log_filename)) {
-                    $fp = fopen($log_filename, 'r');
-                    $fp_content = array();
-                    while(! feof($fp)) {
-                        $fp_content[] = fgets($fp);
+        if(isset($_GET['filter']) AND strpos($entry, $_GET['filter']) === false) {
+            continue;
+        }
+        $filename = $dir.'/'.$entry;
+        $file_last_change = date("F d Y H:i:s.", filemtime($filename));
+        ?>
+        <div class='entry_row_filetosniff'>
+            <div class='entry_name'>
+                <a class="file_link" href="?path=<?php echo $dir;?>&standard=DM&sniff=TEST&dir=current&filetosniff=<?php echo $entry; ?><?php echo isset($_GET['showhash']) ? '&showhash' : ''; ?><?php echo isset($_GET['filter']) ? '&filter='.$_GET['filter'] : ''; ?>&update=30"/>
+                    <?php
+                    if(isset($_GET['showhash'])) {
+                        $hash = substr(md5(file_get_contents($filename)), 0, 8);
+                        echo '<span class="hash" title="edited: '.$file_last_change.'">' . $hash . '</span>';
+                        $hashOfFileHashes .= $hash;
                     }
-                    fclose($fp);
-                    if (date('U', strtotime($fp_content[0])) != date('U', strtotime($file_last_change))) {
-                        echo '<span class="out-of-date">out of date</span>';
-                    } else {
-                        if ($fp_content[1] == 0 AND $fp_content[2] == 0) {
-                            echo '<span class="all-good">all good</span>';
-                        } else {
-                            echo '<span class="warning">'.$fp_content[2].'</span>';
-                            echo '<span class="error">'.$fp_content[1].'</span>';
-                        }
-                    }
-                } else {
-                    echo '<span class="not-tested">not tested</span>';
-                }
-
-                ?>
-                </div>
-                <br style='clear:both;' />
+                    ?>
+                    <?php echo $entry; ?>
+                </a>
             </div>
+            <div class="entry_history">
             <?php
+            $log_filename = getLogFilename($filename);
+            $log_filename = 'Codesniffer/Logs/'.urlencode($log_filename);
+
+            if (file_exists($log_filename)) {
+                $fp = fopen($log_filename, 'r');
+                $fp_content = array();
+                while(! feof($fp)) {
+                    $fp_content[] = fgets($fp);
+                }
+                fclose($fp);
+                if (date('U', strtotime($fp_content[0])) != date('U', strtotime($file_last_change))) {
+                    echo '<span class="out-of-date">out of date</span>';
+                } else {
+                    if ($fp_content[1] == 0 AND $fp_content[2] == 0) {
+                        echo '<span class="all-good">all good</span>';
+                    } else {
+                        echo '<span class="warning">'.$fp_content[2].'</span>';
+                        echo '<span class="error">'.$fp_content[1].'</span>';
+                    }
+                }
+            } else {
+                echo '<span class="not-tested">not tested</span>';
+            }
+
+            ?>
+            </div>
+            <br style='clear:both;' />
+        </div>
+        <?php
     }
 
     if (count($folders) < 1 AND count($files) < 1) {
@@ -200,6 +208,11 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
     }
 
     echo '</div>';
+
+    if(isset($_GET['showhash'])) {
+        echo '<p class="hash allfileshash">'.md5($hashOfFileHashes).'</p>';
+    }
+
 } else {
     echo "<p>Invalid Directory '$dir'</p>";
     echo "<p>Redirecting...</p>";
