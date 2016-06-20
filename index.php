@@ -66,6 +66,7 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] != '') {
         <form action="<?php echo basename(__FILE__); ?>" method="get" class="header-back-btn">
         <input type="hidden" name="path" value="<?php echo $dir; ?>" />
         <input type="hidden" name="dir" value="current" />
+        <?php echo isset($_GET['showdate']) ? '<input type="hidden" name="showdate" value="" />' : ''; ?>
         <?php echo isset($_GET['showhash']) ? '<input type="hidden" name="showhash" value="" />' : ''; ?>
         <?php echo isset($_GET['filter']) ? '<input type="hidden" name="filter" value="'.$_GET['filter'].'" />' : ''; ?>
         <input type="image" src="wcs_images/back.png" class="submit_back" />
@@ -227,7 +228,7 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
 
     echo '</div>';
 
-    if(isset($_GET['showhash'])) {
+    if(isset($_GET['showhash']) AND $hashOfFileHashes !== '') {
         echo '<p class="hash allfileshash">'.md5($hashOfFileHashes).'</p>';
     }
 
