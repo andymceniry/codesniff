@@ -21,6 +21,7 @@ if (isset($env) AND array_key_exists('default_url', $env) AND $_SERVER['QUERY_ST
 <link rel="shortcut icon" href="wcs_images/favicon.ico" />
 <link rel="stylesheet" href="wcs_styles.css" type="text/css" />
 <link rel="stylesheet" href="dm_styles.css" type="text/css" />
+<script src="jquery-3.0.0.min.js"></script>
 <?php
 if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] != '' AND isset($_GET['update']) AND $_GET['update'] != '') {
     $_GET['update'] = intval($_GET['update']) < 30 ? 30 : $_GET['update'];
@@ -94,6 +95,16 @@ if (isset($_GET['filetosniff']) AND $_GET['filetosniff'] != '') {
 }
 
 if (is_dir($dir) AND $handle = opendir($dir)) {
+?>
+
+<div class="options_bar">
+    <label for="optionFilter">Filter: <input type="input" id="optionFilter" value="<?php echo isset($_GET['filter']) ? $_GET['filter'] : ''; ?>" data-original="<?php echo isset($_GET['filter']) ? $_GET['filter'] : ''; ?>"></label>
+    <label for="optionShowHash">Show Hashes: <input type="checkbox" id="optionShowHash"<?php echo isset($_GET['showhash']) ? 'checked="checked"' : ''; ?>></label>
+    <label for="optionShowDate">Show Date: <input type="checkbox" id="optionShowDate"<?php echo isset($_GET['showdate']) ? 'checked="checked"' : ''; ?>></label>
+
+</div>
+
+<?php
 echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('\\', '/', $dir)).'</p>';
     if ($dir != dirname(getcwd())) {
         ?>
@@ -101,6 +112,7 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
         <input type="hidden" name="path" value="<?php echo $dir; ?>" />
         <input type="hidden" name="dir" value="previous" />
         <?php echo isset($_GET['showhash']) ? '<input type="hidden" name="showhash" value="" />' : ''; ?>
+        <?php echo isset($_GET['showdate']) ? '<input type="hidden" name="showdate" value="" />' : ''; ?>
         <?php echo isset($_GET['filter']) ? '<input type="hidden" name="filter" value="'.$_GET['filter'].'" />' : ''; ?>
         <input type="image" src="wcs_images/back.png" class="submit_back" />
         </form>
@@ -135,8 +147,9 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
         <div class='entry_row_dir'>
             <input type="hidden" name="dir" value="next" />
             <?php echo isset($_GET['showhash']) ? '<input type="hidden" name="showhash" value="" />' : ''; ?>
+            <?php echo isset($_GET['showdate']) ? '<input type="hidden" name="showdate" value="" />' : ''; ?>
             <?php echo isset($_GET['filter']) ? '<input type="hidden" name="filter" value="'.$_GET['filter'].'" />' : ''; ?>
-            <a class="folder_link" href="?path=<?php echo $dir;?>&dir=next&dir_name=<?php echo $entry; ?><?php echo isset($_GET['showhash']) ? '&showhash' : ''; ?><?php echo isset($_GET['filter']) ? '&filter='.$_GET['filter'] : ''; ?>"/><?php echo $entry; ?></a>
+            <a class="folder_link" href="?path=<?php echo $dir;?>&dir=next&dir_name=<?php echo $entry; ?><?php echo isset($_GET['showhash']) ? '&showhash' : ''; ?><?php echo isset($_GET['showdate']) ? '&showdate' : ''; ?><?php echo isset($_GET['filter']) ? '&filter='.$_GET['filter'] : ''; ?>"/><?php echo $entry; ?></a>
         </div>
         <?php
     }
@@ -144,7 +157,7 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
     $hashOfFileHashes = '';
     sort($files);
     foreach($files as $entry) {
-        if(isset($_GET['filter']) AND strpos($entry, $_GET['filter']) === false) {
+        if(isset($_GET['filter']) AND trim($_GET['filter']) != '' AND strpos($entry, $_GET['filter']) === false) {
             continue;
         }
         $filename = $dir.'/'.$entry;
@@ -152,11 +165,16 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
         ?>
         <div class='entry_row_filetosniff'>
             <div class='entry_name'>
-                <a class="file_link" href="?path=<?php echo $dir;?>&standard=DM&sniff=TEST&dir=current&filetosniff=<?php echo $entry; ?><?php echo isset($_GET['showhash']) ? '&showhash' : ''; ?><?php echo isset($_GET['filter']) ? '&filter='.$_GET['filter'] : ''; ?>&update=30"/>
+                <a class="file_link" href="?path=<?php echo $dir;?>&standard=DM&sniff=TEST&dir=current&filetosniff=<?php echo $entry; ?><?php echo isset($_GET['showhash']) ? '&showhash' : ''; ?><?php echo isset($_GET['showdate']) ? '&showdate' : ''; ?><?php echo isset($_GET['filter']) ? '&filter='.$_GET['filter'] : ''; ?>&update=30"/>
+                    <?php
+                    if(isset($_GET['showdate'])) {
+                        echo '<span class="date">' . date('Y.m.d H:i', strtotime($file_last_change)) . '</span>';
+                    }
+                    ?>
                     <?php
                     if(isset($_GET['showhash'])) {
                         $hash = substr(md5(file_get_contents($filename)), 0, 8);
-                        echo '<span class="hash" title="edited: '.$file_last_change.'">' . $hash . '</span>';
+                        echo '<span class="hash">' . $hash . '</span>';
                         $hashOfFileHashes .= $hash;
                     }
                     ?>
@@ -219,5 +237,6 @@ echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('
 }
 ?>
 
+<script src="dm_js.js"></script>
 </body>
 </html>

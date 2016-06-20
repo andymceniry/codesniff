@@ -1,3 +1,5 @@
+body { width:930px; }
+
 .clearfix:before, .clearfix:after { content: " "; display: table; }
 .clearfix:after { clear: both; }
 .clearfix { *zoom: 1; }
@@ -14,7 +16,8 @@ a.file_link { padding: 2px 0px 0px 0px; color:#000; float:left; }
 .entry_row_filetosniff { background-color:#e8e8e8; }
 .entry_row_filetosniff:nth-child(even) { background-color:#f0f0f0; }
 .entry_name { width: 400px; }
-.hash { font-family:monospace;margin-right:10px; }
+.hash { font-family:monospace;margin-right:10px; color:#800; }
+.date { font-family:monospace;margin-right:10px; color:#008; }
 .allfileshash { color:#900; margin: 10px 47px; }
 .entry_history { width:200px; float:right; text-align:right;}
 
@@ -35,19 +38,22 @@ pre { word-wrap: break-word; line-height: 24px; }
 .report_summary.clean { background:#380; }
 .report_filename { background:#aaa; color:#333; height: 24px; padding: 10px; margin: 0 0 0px 0;}
 .report_filename p {line-height:24px; float:left; }
-.report { padding: 20px 20px 20px 20px; width:890px; }
+.report { padding: 20px 20px 20px 20px; width:890px; margin-top:0; }
 .sniff-refresh { margin:0; float:right; }
 
 .header-back-btn { float:right; }
-.infopath { margin:10px 0 15px; }
+.infopath { margin:0; }
 .infopath p { float:left; line-height:20px; }
 .infopath p a { color:#fff; }
 .infopath .submit_back { margin:0; }
 
 
 
-body { width:930px; }
 
 .line-number { background: #ccc; padding: 3px 7px 3px 8px; border-radius: 3px; cursor:pointer; }
 .line-number.error { background:#c30; color:#fff; }
 .line-number.warning { background:#fc0; }
+
+.options_bar { background:#fff; height:20px; width:890px; padding:0px 20px; height:22px; line-height:20px; }
+.options_bar label { margin-right:20px; height:20px; line-height:22px; margin:0; padding:0; }
+.options_bar input { border:0; margin:-2px 0 0 5px; padding:3px 0;  }
