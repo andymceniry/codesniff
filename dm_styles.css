@@ -6,14 +6,15 @@ body { width:930px; }
 .hide { display:none; }
 a.folder_link { padding: 2px 0px 0px 8px; color:#000; font-weight:bold; float:left; }
 a.file_link { padding: 2px 0px 0px 0px; color:#000; float:left; }
-.entry_row_dir { height:18px; padding:4px 4px 4px 20px; background-position: 3px 5px; }
+.entry_row_dir {background-color:#d8d8d8; height:18px; padding:4px 4px 4px 20px; background-position: 3px 5px; margin:2px 0; }
 .entry_row_file_generic, .entry_row_file_picture { display:none; }
 .form_row { margin:10px 0; }
 
 .entry_row_holder { background:#f0f0f0; padding:10px 20px; }
 
-.entry_row_dir:hover {background-color:#f0f0f0;-moz-border-radius:2px;-khtml-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;}
-.entry_row_filetosniff { background-color:#e8e8e8; }
+.entry_row_dir:hover {-moz-border-radius:2px;-khtml-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;}
+.entry_row_dir:nth-child(even) { background-color:#f0f0f0; }
+.entry_row_filetosniff { background-color:#d8d8d8; }
 .entry_row_filetosniff:nth-child(even) { background-color:#f0f0f0; }
 .entry_name { width: 400px; }
 .hash { font-family:monospace;margin-right:10px; color:#800; }
@@ -57,3 +58,32 @@ pre { word-wrap: break-word; line-height: 24px; }
 .options_bar { background:#fff; height:20px; width:890px; padding:0px 20px; height:22px; line-height:20px; }
 .options_bar label { margin-right:20px; height:20px; line-height:22px; margin:0; padding:0; }
 .options_bar input { border:0; margin:-2px 0 0 5px; padding:3px 0;  }
+
+/*  COMPARE  */
+#compare .infopath a { float: right; }
+#compare .entry_row_dir { width: 100%; }
+#compare .entry_row_dir .date { width:130px; float:left; }
+#compare .entry_row_dir .hash { width:70px; float:left; }
+#compare .entry_row_dir .folder_link { width:425px; float:left; }
+#compare .entry_row_dir .folder_link2 { width: 408px; float: left; text-align: right; font-weight: bold;  }
+#compare .entry_row_dir { padding-left:5px;}
+#compare .entry_row_dir .folder_link { color:#333; background-image: url(wcs_images/folder_stand.png); background-repeat: no-repeat; background-position-x: left; padding-left: 25px; min-height: 20px; }
+#compare .entry_row_dir .folder_link2 { color:#333; background-image: url(wcs_images/folder_stand.png); background-repeat: no-repeat; background-position-x: right; padding-right: 25px; min-height: 20px; }
+#compare .nobg { background:none !important; }
+#compare .nobgimg { background-image:none !important; }
+#compare .entry_name { width: 100%; }
+#compare .entry_name .date { width:130px; float:left; }
+#compare .entry_name .hash { width:70px; float:left; }
+#compare .entry_name .date2 { text-align:right; }
+#compare .entry_name .hash2 { text-align:right; }
+#compare .entry_name .file { width:425px; float:left; }
+#compare .docompare { background:#aaa; color:#333; color: #333; padding: 8px 16px; margin: 0 24px 10px; border-radius: 5px; display: inline-block; } 
+#compare .missing { background-color:#fcc !important; }
+#compare .mismatch { background-color:#f99 !important; }
+#compare .hashtotals { background-color:#f99 !important; padding:10px; margin-bottom:10px;}
+#compare .hashtotals.match { background-color:#8d3 !important; }
+#compare .hashtotals p { float:left; color:#333;}
+#compare .hashtotals p.hashtotalstitle { margin: 0 0 0 13px; font-size: 90%; }
+#compare .hashtotals p.allfileshash { float:right; margin: 0 17px 0 11px; font-size: 90%; }
+#compare .file_link_r { padding-right: 7px; float:right; }
+#compare .file_link_r .file { background-image: url(wcs_images/page_white_code.png); background-repeat: no-repeat; background-position-x: right; padding-right: 25px; min-height: 20px; text-align: right; width: 405px; }

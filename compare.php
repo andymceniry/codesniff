@@ -7,10 +7,47 @@ if (file_exists('env.php')) {
     include 'env.php';
 }
 
-if (isset($env) AND array_key_exists('default_url', $env) AND $_SERVER['QUERY_STRING'] === '') {
-    header('location: ' . $env['default_url']);
+if (isset($env) AND array_key_exists('default_compare_url', $env) AND $_SERVER['QUERY_STRING'] === '') {
+    header('location: ' . $env['default_compare_url']);
     die();
 }
+if ($_SERVER['QUERY_STRING'] === '') {
+    $message = 'Missing dir1 and dir2 values in the URL.  Suggest adding a "default_compare_url" setting in your env file.';
+    die('<pre>'.$message.'<br/>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
+}
+
+//  DIRECTORY ONE
+if (!isset($_GET['dir1'])) {
+    $message = 'dir1 not found in URL';
+    die('<pre>'.$message.'<br/>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
+}
+$dir1 = $_GET['dir1'];
+if (!is_dir($dir1)) {
+    $message = 'Directory ' . $dir1 . ' not found';
+    die('<pre>'.$message.'<br/>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
+}
+$handle = @opendir($dir1);
+if (!$handle) {
+    $message = $dir1 . ' is not a valid directory';
+    die('<pre>'.$message.'<br/>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
+}
+//  DIRECTORY TWO
+if (!isset($_GET['dir2'])) {
+    $message = 'dir2 not found in URL';
+    die('<pre>'.$message.'<br/>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
+} else {
+    $dir2 = $_GET['dir2'];
+}
+if (!is_dir($dir2)) {
+    $message = 'Directory ' . $dir2 . ' not found';
+    die('<pre>'.$message.'<br/>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
+}
+$handle2 = @opendir($dir2);
+if (!$handle2) {
+    $message = $dir2 . ' is not a valid directory';
+    die('<pre>'.$message.'<br/>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
+}
+
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -23,256 +60,251 @@ if (isset($env) AND array_key_exists('default_url', $env) AND $_SERVER['QUERY_ST
 <link rel="stylesheet" href="wcs_styles.css" type="text/css" />
 <link rel="stylesheet" href="dm_styles.css" type="text/css" />
 <script src="jquery-3.0.0.min.js"></script>
-
-<style>
-.infopath a { float: right; }
-.entry_row_dir { width: 100%; }
-.entry_row_dir .date { width:130px; float:left; }
-.entry_row_dir .hash { width:70px; float:left; }
-.entry_row_dir .folder_link { width:425px; float:left; }
-.entry_row_dir .folder_link2 { width: 408px; float: left; text-align: right; font-weight: bold;  }
-.entry_row_dir { background:none; padding-left:5px;}
-.entry_row_dir .folder_link { background-image: url(wcs_images/folder_stand.png); background-repeat: no-repeat; background-position-x: left; padding-left: 25px; min-height: 20px; }
-.entry_row_dir .folder_link2 { background-image: url(wcs_images/folder_stand.png); background-repeat: no-repeat; background-position-x: right; padding-right: 25px; min-height: 20px; }
-.nobg  { background:none !important; }
-.entry_name { width: 100%; }
-.entry_name .date { width:130px; float:left; }
-.entry_name .hash { width:70px; float:left; }
-.entry_name .date2 { text-align:right; }
-.entry_name .hash2 { text-align:right; }
-.entry_name .file { width:425px; float:left; }
-.missing { background-color:#ffc !important; }
-.mismatch { background-color:#fcc !important; }
-</style>
 </head>
 
-<body>
-
-
-<?php
-if (!isset($_GET['path'])) {
-die('<pre>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
-} else {
-    $dir = $_GET['path'];
-}
-
-if (!isset($_GET['path2'])) {
-die('<pre>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
-} else {
-    $dir2 = $_GET['path2'];
-}
-
-
-
-if (!is_dir($dir)) {
-echo '<pre>'.var_export($dir, TRUE).'</pre>';
-    die('<pre>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
-}
-$handle = opendir($dir);
-if (!$handle) {
-    die('<pre>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
-}
-
-
-
-if (!is_dir($dir2)) {
-echo '<pre>'.var_export($dir2, TRUE).'</pre>';
-    die('<pre>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
-}
-$handle2 = opendir($dir2);
-if (!$handle2) {
-    die('<pre>Exit at Line '.__LINE__.' of <span title="'.__FILE__.'">'.str_replace(array(__DIR__, '\\'), '', __FILE__).'</span> @ '.date('H:i:s'));
-}
-
-
-echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('\\', '/', $dir)).'</p>';
-$linkParts = getQueryStringAsArray();
-$linkParts['path'] = getParentDir($linkParts['path']);
-unset($linkParts['compare']);
-$link = makeQueryStringFromArray($linkParts);
-echo '<a href="?'.$link.'"><input type="image" src="wcs_images/back.png" class="submit_back" /></a>';
-echo '</div>';
-
-echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('\\', '/', $dir2)).'</p>';
-$linkParts = getQueryStringAsArray();
-$linkParts['path2'] = getParentDir($linkParts['path2']);
-unset($linkParts['compare']);
-$link2 = makeQueryStringFromArray($linkParts);
-
-    echo '<a href="?'.$link2.'"><input type="image" src="wcs_images/back.png" class="submit_back" /></a>';
-
-echo '</div>';
-
-
-    echo '<div class="entry_row_holder">';
-
-    $extensionstosniff = array('php','css', 'js');
-    $typepicture = array('bmp','gif','png','jpg');
-
-    $folders = array();
-    $files = array();
-    while (false !== ($entry = readdir($handle))) {
-        if ($entry != "." && $entry != ".." && $entry != "webcodesniffer") {
-            if (is_dir($dir."/".$entry) === true) {
-                $folders[] = $entry;
-            } else {
-                $files[] = $entry;
-            }
-        }
-    }
-    while (false !== ($entry = readdir($handle2))) {
-        if ($entry != "." && $entry != ".." && $entry != "webcodesniffer") {
-            if (is_dir($dir2."/".$entry) === true) {
-                $folders[] = $entry;
-            } else {
-                $files[] = $entry;
-            }
-        }
-    }
-    $folders = array_unique($folders);
-    $files = array_unique($files);
-
-    sort($folders);
-    foreach($folders as $entry) {
-
-        $exists = is_dir($dir."/".$entry);
-        $exists2 = is_dir($dir2."/".$entry);
-
-        ?>
-        <div class='entry_row_dir'>
-            <input type="hidden" name="dir" value="next" />
-            <?php echo isset($_GET['showhash']) ? '<input type="hidden" name="showhash" value="" />' : ''; ?>
-            <?php echo isset($_GET['showdate']) ? '<input type="hidden" name="showdate" value="" />' : ''; ?>
-            <?php echo isset($_GET['filter']) ? '<input type="hidden" name="filter" value="'.$_GET['filter'].'" />' : ''; ?>
+<body id="compare">
 
 <?php
-if($exists) {
-    $linkParts = getQueryStringAsArray();
-    $linkParts['path'] .= '/' . $entry;
-    unset($linkParts['compare']);
-    $link = makeQueryStringFromArray($linkParts);
-    echo '<a class="folder_link" href="?'.$link.'"/>'.$entry.'</a>';
-} else {
-    echo '<div class="folder_link nobg"> &nbsp; </div>';
+
+//  create parent links
+$linkParts1 = getQueryStringAsArray();
+$linkParts1['dir1'] = getParentDir($linkParts1['dir1']);
+unset($linkParts1['compare']);
+$link1 = makeQueryStringFromArray($linkParts1);
+$linkParts2 = getQueryStringAsArray();
+$linkParts2['dir2'] = getParentDir($linkParts2['dir2']);
+unset($linkParts2['compare']);
+$link2 = makeQueryStringFromArray($linkParts2);
+
+//  display current directories
+echo '<div class="infopath clearfix"><p>' . str_replace('//', '/', str_replace('\\', '/', $dir1)).'</p>';
+echo '<a href="?'.$link1.'"><input type="image" src="wcs_images/back.png" class="submit_back" /></a>';
+echo '<br/><br/>';
+echo '<p>' . str_replace('//', '/', str_replace('\\', '/', $dir2)).'</p>';
+echo '<a href="?'.$link2.'"><input type="image" src="wcs_images/back.png" class="submit_back" /></a>';
+echo '</div>';
+
+//  walk through each folder adding contents to releveant array then reduce down to remove duplicates
+$files = array();
+$folders = array();
+while (false !== ($entry = readdir($handle))) {
+    if ($entry != "." && $entry != ".." && $entry != "webcodesniffer") {
+        if (is_dir($dir1."/".$entry) === true) {
+            $folders[] = $entry;
+        } else {
+            $files[] = $entry;
+        }
+    }
 }
-if($exists2) {
-    $linkParts = getQueryStringAsArray();
-    $linkParts['path2'] .= '/' . $entry;
-    unset($linkParts['compare']);
-    $link = makeQueryStringFromArray($linkParts);
-    echo '<a class="folder_link2" href="?'.$link.'"/>'.$entry.'</a>';
-} else {
-    echo '<div class="folder_link2 nobg"> &nbsp; </div>';
+while (false !== ($entry = readdir($handle2))) {
+    if ($entry != "." && $entry != ".." && $entry != "webcodesniffer") {
+        if (is_dir($dir2."/".$entry) === true) {
+            $folders[] = $entry;
+        } else {
+            $files[] = $entry;
+        }
+    }
 }
-?>
-        </div>
-        <?php
+$folders = array_unique($folders);
+$files = array_unique($files);
+sort($folders);
+sort($files);
+
+$hash = array();
+
+//  output rows
+echo '<div class="entry_row_holder">';
+
+//  loop through folders
+foreach ($folders as $entry) {
+    $exists1 = is_dir($dir1."/".$entry);
+    $exists2 = is_dir($dir2."/".$entry);
+
+    if ($exists1) {
+        $linkParts1 = getQueryStringAsArray();
+        $linkParts1['dir1'] .= '/' . $entry;
+        unset($linkParts1['compare']);
+        $link1 = makeQueryStringFromArray($linkParts1);
+        $hash['eveything']['dir1'] .= md5($entry);
+    }
+    if ($exists2) {
+        $linkParts2 = getQueryStringAsArray();
+        $linkParts2['dir2'] .= '/' . $entry;
+        unset($linkParts2['compare']);
+        $link2 = makeQueryStringFromArray($linkParts2);
+        $hash['eveything']['dir2'] .= md5($entry);
+    }
+    ?>
+    <?php
+
+    if ($exists1) {
+        echo '<div class="entry_row_dir"><a class="folder_link" href="?' . $link1 . '"/>' . $entry . '</a>';
+    } else {
+        echo '<div class="entry_row_dir nobg"><div class="folder_link nobg"> &nbsp; </div>';
+    }
+    if ($exists2) {
+        echo '<a class="folder_link2" href="?' . $link2 . '"/>' . $entry . '</a>';
+    } else {
+        echo '<div class="folder_link2 nobg"> &nbsp; </div>';
+    }
+    ?>
+    </div>
+    <?php
+}
 
 
 
+foreach ($files as $entry) {
+    $filename1 = $dir1 . '/' . $entry;
+    $filename2 = $dir2 . '/' . $entry;
+
+    $exists1 = file_exists($filename1);
+    if ($exists1) {
+        $file_last_change1 = date("F d Y H:i:s.", filemtime($filename1));
+        $hash1 = substr(md5(file_get_contents($filename1)), 0, 8);
+    }
+    $exists2 = file_exists($filename2);
+    if ($exists2) {
+        $file_last_change2 = date("F d Y H:i:s.", filemtime($filename2));
+        $hash2 = substr(md5(file_get_contents($filename2)), 0, 8);
     }
 
-
-if (!isset($_GET['compare'])) {
-    echo '<a href="?'.$_SERVER['QUERY_STRING'].'&compare">COMPARE</a>';
-    #echo '<pre>'.var_export($_SERVER, TRUE).'</pre>';
-    die();
-}
-
-    $hashOfFileHashes = '';
-    sort($files);
-    foreach($files as $entry) {       
-        $filename = $dir.'/'.$entry;
-        $filename2 = $dir2.'/'.$entry;
-
-        $exists = file_exists($filename);
-        if($exists) { 
-            $file_last_change = date("F d Y H:i:s.", filemtime($filename));
-            $hash = substr(md5(file_get_contents($filename)), 0, 8);
-        }
-        $exists2 = file_exists($filename2);
-        if($exists2) { 
-            $file_last_change2 = date("F d Y H:i:s.", filemtime($filename2));
-            $hash2 = substr(md5(file_get_contents($filename2)), 0, 8);
-        }
-
-        $classes = array();
-        if(!$exists OR !$exists2) { 
+    $classes = array();
+    if (isset($_GET['compare'])) {
+        if (!$exists1 OR !$exists2) {
             $classes[] = 'missing';
         } else {
-            if($hash != $hash2) { 
+            if ($hash1 != $hash2) {
                 $classes[] = 'mismatch';
             }
         }
-        ?>
-        <div class='entry_row_filetosniff <?php echo implode(' ', $classes); ?>'>
-            <div class='entry_name'>
-                <span class="file"><?php echo $entry; ?></span>
-                    <?php if($exists) { ?>
-                    <a class="file_link" href=""/>
-                    <?php
-                    echo '<span class="date">' . date('Y.m.d H:i', strtotime($file_last_change)) . '</span>';
-                    echo '<span class="hash">' . $hash . '</span>';
-                    $hashOfFileHashes .= $hash;
+    } else {
+        if (!$exists1) {
+            $classes[] = 'nobgimg';
+        }
+    }
+    ?>
+    <div class='entry_row_filetosniff <?php echo implode(' ', $classes); ?>'>
+        <div class='entry_name'>
+    <?php
+        //  browse mode
+        if (!isset($_GET['compare'])) {
+            if ($exists1) {
+                    echo '<a class="file_link" href="?' . $link1 . '"/><span class="file">' . $entry . '</span></a>';
+            } else {
+                echo '<div class="file_link"><span class="file nobg"> &nbsp; </span></div>';
+            }
+            if ($exists2) {
+                    echo '<a class="file_link file_link_r" href="?' . $link2 . '"/><span class="file">' . $entry . '</span></a>';
+            } else {
+                echo '<div class="file_link file_link_r"><span class="file nobg"> &nbsp; </span></div>';
+            }
+        } else {
+            //  compare mode
+            ?>
+            <span class="file"><?php echo $entry; ?></span>
+            <?php if ($exists1) { ?>
+                <a class="file_link" href=""/>
+                <?php
+                    echo '<span class="date">' . date('Y.m.d H:i', strtotime($file_last_change1)) . '</span>';
+                    echo '<span class="hash">' . $hash1 . '</span>';
+                    if ($exists1 AND $exists2) {
+                        $hash['common']['dir1'] .= $hash1;
+                    }
+            } else {
+                echo '<span class="date"> &nbsp; </span><span class="hash"> &nbsp; </span>';
+            }
+            $hash['eveything']['dir1'] .= $hash1;
+            $hash['files']['dir1'] .= $hash1;
+            ?>
+            </a>
+                <?php if ($exists2) { ?>
+                <a class="file_link" href=""/>
+                <?php
+                echo '<span class="date date2">' . date('Y.m.d H:i', strtotime($file_last_change2)) . '</span>';
+                echo '<span class="hash hash2">' . $hash2 . '</span>';
+                $hashOfFileHashes2 .= $hash2;
+                if ($exists1 AND $exists2) {
+                    $hash['common']['dir2'] .= $hash2;
+                }
                     } else {
                         echo '<span class="date"> &nbsp; </span><span class="hash"> &nbsp; </span>';
                     }
-                    ?>
-                </a>
-                    <?php if($exists2) { ?>
-                    <a class="file_link" href=""/>
-                        <?php
-                        echo '<span class="date date2">' . date('Y.m.d H:i', strtotime($file_last_change2)) . '</span>';
-                        echo '<span class="hash hash2">' . $hash2 . '</span>';
-                        $hashOfFileHashes .= $hash2;
-                        } else {
-                            echo '<span class="date"> &nbsp; </span><span class="hash"> &nbsp; </span>';
-                        }
+                    $hash['eveything']['dir2'] .= $hash2;
+                    $hash['files']['dir2'] .= $hash2;
                         ?>
                 </a>
-            </div>
-            <br style='clear:both;' />
-        </div>
         <?php
+        }
+        ?>
+        </div>
+        <br style='clear:both;' />
+    </div>
+    <?php
     }
 
+    //  if no files or folders
     if (count($folders) < 1 AND count($files) < 1) {
         echo '<p><b> &nbsp; &nbsp; &nbsp; no matching files or folders found.</b></p>';
     }
 
+echo '</div>';
+
+
+if (!isset($_GET['compare'])) {
+    echo '<a class="docompare" href="?'.$_SERVER['QUERY_STRING'].'&compare">COMPARE</a>';
+} else {
+    $class = $hash['eveything']['dir1'] === $hash['eveything']['dir2'] ? 'match' : '';
+    echo '<div class="hashtotals clearfix '.$class.'">';
+    echo '<p class="hashtotalstitle">EVERYTHING</p>';
+    echo '<p class="hash allfileshash">'.md5($hash['eveything']['dir1']).'</p>';
+    echo '<p class="hash allfileshash">'.md5($hash['eveything']['dir2']).'</p>';
     echo '</div>';
+    $class = $hash['files']['dir1'] === $hash['files']['dir2'] ? 'match' : '';
+    echo '<div class="hashtotals clearfix '.$class.'">';
+    echo '<p class="hashtotalstitle">FILES</p>';
+    echo '<p class="hash allfileshash">'.md5($hash['files']['dir1']).'</p>';
+    echo '<p class="hash allfileshash">'.md5($hash['files']['dir2']).'</p>';
+    echo '</div>';
+    $class = $hash['common']['dir1'] === $hash['common']['dir2'] ? 'match' : '';
+    echo '<div class="hashtotals clearfix '.$class.'">';
+    echo '<p class="hashtotalstitle">COMMON FILES</p>';
+    echo '<p class="hash allfileshash">'.md5($hash['common']['dir1']).'</p>';
+    echo '<p class="hash allfileshash">'.md5($hash['common']['dir2']).'</p>';
+    echo '</div>';
+}
 
-    if(isset($_GET['showhash']) AND $hashOfFileHashes !== '') {
-        echo '<p class="hash allfileshash">'.md5($hashOfFileHashes).'</p>';
-    }
 
 
-
-function getQueryStringAsArray() {
+function getQueryStringAsArray()
+{
     $qs = $_SERVER['QUERY_STRING'];
     $array = array();
     $qsParts = explode('&', $qs);
-    foreach($qsParts as $keyVal) {
-        $keyValParts = explode('=', $keyVal); 
+    foreach ($qsParts as $keyVal) {
+        $keyValParts = explode('=', $keyVal);
         if (!isset($keyValParts[1]) OR $keyValParts[1] === null) {
             $keyValParts[1] = '';
         }
         $array[$keyValParts[0]] = $keyValParts[1];
     }
     return $array;
+
 }
 
-function makeQueryStringFromArray($parts) {
+function makeQueryStringFromArray($parts)
+{
     $qs = '';
     $array = array();
-    foreach($parts as $key => $val) {
+    foreach ($parts as $key => $val) {
         $array[] = "$key=$val";
     }
     return implode('&', $array);
+
 }
 
-function getParentDir($currentDir) {
-
+function getParentDir($currentDir)
+{
     $currentDir = trim($currentDir);
     $currentDir = str_replace('%3A', ':', $currentDir);
     $currentDir = str_replace('%2F', "/", $currentDir);
@@ -282,6 +314,7 @@ function getParentDir($currentDir) {
     $parentDir = urlencode(implode('/', $folders));
 
     return $parentDir;
+
 }
 
 
