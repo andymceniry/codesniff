@@ -1695,6 +1695,7 @@ class PHP_CodeSniffer
             // Check that there are not two captial letters next to each other.
             $length          = strlen($string);
             $lastCharWasCaps = $classFormat;
+            $lastChar = '';
 
             for ($i = 1; $i < $length; $i++) {
                 $ascii = ord($string{$i});
@@ -1709,11 +1710,13 @@ class PHP_CodeSniffer
                     }
                 }
 
-                if ($isCaps === true && $lastCharWasCaps === true) {
+                if ($isCaps === true && $lastCharWasCaps === true && $lastChar !== 'A') {
                     return false;
                 }
 
                 $lastCharWasCaps = $isCaps;
+                $lastChar = strtoupper($string{$i});
+
             }
         }//end if
 
