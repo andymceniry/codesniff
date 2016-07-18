@@ -58,8 +58,18 @@ class DM_Sniffs_WhiteSpace_ObjectOperatorSpacingSniff implements PHP_CodeSniffer
 
         $prevType = $tokens[($stackPtr - 1)]['code'];
         if (in_array($prevType, PHP_CodeSniffer_Tokens::$emptyTokens) === true) {
-            $error = 'Space found before object operator';
-            $phpcsFile->addError($error, $stackPtr, 'Before');
+
+            $isChainedFunctionCall = true;
+            $isChainedFunctionCall = $tokens[($stackPtr - 3)]['content'] !== ')' ? false : $isChainedFunctionCall;
+            $isChainedFunctionCall = strlen($tokens[($stackPtr - 1)]['content']) % 4 !== 0 ? false : $isChainedFunctionCall;
+            $isChainedFunctionCall = trim($tokens[($stackPtr - 1)]['content']) !== '' ? false : $isChainedFunctionCall;
+            $isChainedFunctionCall = $tokens[($stackPtr)]['content'] !== '->' ? false : $isChainedFunctionCall;
+
+            if (!$isChainedFunctionCall) {
+                $error = 'Space found before object operator';
+                $phpcsFile->addError($error, $stackPtr, 'Before');
+            }
+
         }
 
         $nextType = $tokens[($stackPtr + 1)]['code'];
